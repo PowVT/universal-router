@@ -11,7 +11,7 @@ const DEFAULT_COMPILER_SETTINGS = {
     evmVersion: 'istanbul',
     optimizer: {
       enabled: true,
-      runs: 1_000_000,
+      runs: 1_000,
     },
     metadata: {
       bytecodeHash: 'none',
@@ -27,10 +27,10 @@ export default {
     hardhat: {
       allowUnlimitedContractSize: false,
       chainId: 1,
-      forking: {
-        url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
-        blockNumber: 15360000,
-      },
+      // forking: {
+      //   url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      //   blockNumber: 15360000,
+      // },
     },
     mainnet: {
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
