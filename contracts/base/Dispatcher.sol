@@ -13,6 +13,8 @@ import {ERC1155} from 'solmate/src/tokens/ERC1155.sol';
 import {IAllowanceTransfer} from 'permit2/src/interfaces/IAllowanceTransfer.sol';
 import {ICryptoPunksMarket} from '../interfaces/external/ICryptoPunksMarket.sol';
 
+import "hardhat/console.sol";
+
 /// @title Decodes and Executes Commands
 /// @notice Called by the UniversalRouter contract to efficiently decode and execute a singular command
 abstract contract Dispatcher is Payments, V2SwapRouter, V3SwapRouter, Callbacks {
@@ -147,6 +149,7 @@ abstract contract Dispatcher is Payments, V2SwapRouter, V3SwapRouter, Callbacks 
                         (address token, address recipient, uint256 id) = abi.decode(inputs, (address, address, uint256));
                         Payments.sweepERC721(token, recipient.map(), id);
                     }
+                    console.log(success);
                     // 0x18 <= command < 0x1f
                 } else {
                     if (command == Commands.X2Y2_721) {

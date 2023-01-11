@@ -86,10 +86,10 @@ describe('UniversalRouter, Seaport - matchOrders', () => {
             const price = ethers.utils.parseEther("10000");
             // mint a mock ERC721 token to the seller
             //await testERC721.connect(seller).mint(seller.address, 1)
-            await mintAndApprove721(seller, router.address, 1)
+            await mintAndApprove721(seller, marketplaceContract.address, 1)
             expect(await testERC721.ownerOf(1)).to.eq(seller.address)
             // mint ERC20 tokens to the buyer (price)
-            await mintAndApproveERC20(buyer, router.address, price)
+            await mintAndApproveERC20(buyer, marketplaceContract.address, price)
             //await testERC20.connect(buyer).mint(buyer.address, price)
             expect(await testERC20.balanceOf(buyer.address)).to.eq(price)
             
@@ -173,11 +173,14 @@ describe('UniversalRouter, Seaport - matchOrders', () => {
 
             // execute the trade via the OrderRouter
             const balanceBefore = await testERC721.balanceOf(buyer.address)
-            await router['execute(bytes,bytes[])'](commands, inputs)
+            console.log("Buyer balance before", balanceBefore.toString())
+            //await marketplaceContract.connect(deployer).matchOrders([sellOrder, mirrorOrder], fulfillments)
+            await router.connect(deployer)['execute(bytes,bytes[])'](commands, inputs, { value: value })
             const balanceAfter = await testERC721.balanceOf(buyer.address)
-            //get the balance of the seller 
+            console.log("Buyer balance after", balanceAfter.toString())
+            //get the balance of the seller
             const balanceSeller = await testERC721.balanceOf(seller.address)
-            console.log("balanceSeller", balanceSeller.toString())
+            console.log("Seller balance seller", balanceSeller.toString())
 
             expect(balanceAfter.sub(balanceBefore)).to.eq(1)
         })
